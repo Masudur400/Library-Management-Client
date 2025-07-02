@@ -10,6 +10,8 @@ import Root from './page&components/Pages/Root';
 import Home from './page&components/Pages/Home';
 import AddBooks from './page&components/Pages/AddBooks';
 import BorrowBooks from './page&components/Pages/BorrowBooks';
+import {Provider} from 'react-redux'
+import { store } from './redux/store.ts';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode> 
+    <Provider store={store}> 
     <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 )
