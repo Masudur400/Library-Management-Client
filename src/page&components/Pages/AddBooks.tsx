@@ -1,29 +1,36 @@
-import { Button } from "@/components/ui/button"
 import {
     Form,
-    FormControl, 
+    FormControl,
     FormField,
     FormItem,
     FormLabel,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
- 
-import { useForm } from "react-hook-form";
+
+import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select"
+import { useAppDispatch } from "@/redux/hook";
+import { addBook } from "@/redux/features/bookSlice";
+import type { IBook } from "@/redux/interfaces/interface";
 
 
 
 const AddBooks = () => {
+
+
+    const dispatch = useAppDispatch()
+
     const form = useForm()
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        const res = await dispatch(addBook(data as IBook))
+        console.log('res', res);
     }
 
 
@@ -39,20 +46,21 @@ const AddBooks = () => {
     //         Availability: "Limited", 
 
     return (
-        <div>
+        <div className="p-3 md:w-1/2 lg:w-1/3 mx-auto shadow-md m-2 rounded-md">
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
                     {/* input field 1 */}
                     <FormField
+
                         control={form.control}
                         name="Title"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Title</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Enter Book Title" {...field} />
+                                    <Input placeholder="Enter Book Title" {...field} required />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -65,7 +73,7 @@ const AddBooks = () => {
                             <FormItem>
                                 <FormLabel>Author</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Enter Author Name" {...field} />
+                                    <Input placeholder="Enter Author Name" {...field} required />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -78,7 +86,7 @@ const AddBooks = () => {
                             <FormItem>
                                 <FormLabel>Genre</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Enter Genre" {...field} />
+                                    <Input placeholder="Enter Genre" {...field} required />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -91,7 +99,7 @@ const AddBooks = () => {
                             <FormItem>
                                 <FormLabel>ISBN</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="ISBN" {...field} />
+                                    <Input placeholder="ISBN" {...field} required />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -104,19 +112,19 @@ const AddBooks = () => {
                             <FormItem>
                                 <FormLabel>Copies</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Copies" {...field} />
+                                    <Input placeholder="Copies" {...field} required />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
                     {/* input field 6 */}
-                    <FormField 
+                    <FormField
                         control={form.control}
                         name="Availability"
                         render={({ field }) => (
                             <FormItem >
                                 <FormLabel>Availability</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select onValueChange={field.onChange} defaultValue={field.value} required>
                                     <FormControl className="w-full">
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a Availability" />
@@ -124,10 +132,10 @@ const AddBooks = () => {
                                     </FormControl>
                                     <SelectContent>
                                         <SelectItem value="Limited">Limited</SelectItem>
-                                        <SelectItem value="Available">Available</SelectItem> 
+                                        <SelectItem value="Available">Available</SelectItem>
                                     </SelectContent>
                                 </Select>
-                                 
+
                             </FormItem>
                         )}
                     />
@@ -135,7 +143,7 @@ const AddBooks = () => {
 
 
                     {/* submit button */}
-                    <Button type="submit">Submit</Button>
+                    <button type="submit" className="px-2 py-1 rounded-md text-center text-white bg-orange-500 w-full hover:shadow-orange-300 shadow-md">Submit</button>
                 </form>
             </Form>
         </div>
