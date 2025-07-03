@@ -7,3 +7,13 @@ export interface IBook {
     Copies: number;
     Availability: string;
 }
+
+export interface IBorrow {
+  id: string;
+  bookId: string;
+  buyerName: string;
+  quantity:number;
+  bookTitle:string;
+  bookAuthor:string;
+  genre:string;
+}

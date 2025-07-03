@@ -12,6 +12,7 @@ import AddBooks from './page&components/Pages/AddBooks';
 import BorrowBooks from './page&components/Pages/BorrowBooks';
 import {Provider} from 'react-redux'
 import { store } from './redux/store.ts';
+import SingleBookDetails from './page&components/Pages/SingleBookDetails.tsx';
 
 const router = createBrowserRouter([
   {
@@ -29,13 +30,20 @@ const router = createBrowserRouter([
       {
         path: '/borrowBooks',
         element: <BorrowBooks></BorrowBooks>
-      }
+      },
+      {
+        // user route 
+        path: '/book/:id',
+        element: <SingleBookDetails></SingleBookDetails>
+      },
     ]
   },
 ]);
 
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode> 
+    
     <Provider store={store}> 
     <RouterProvider router={router} />
     </Provider>
