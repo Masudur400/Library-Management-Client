@@ -15,34 +15,41 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useAppDispatch } from "@/redux/hook";
-import { addBook } from "@/redux/features/bookSlice";
-import type { IBook } from "@/redux/interfaces/interface";
 import toast, { Toaster } from 'react-hot-toast';
+import { Textarea } from "@/components/ui/textarea";
+import { useCreateBookMutation } from "@/redux/api/bookApi";
 
 
 
 const AddBooks = () => {
 
+    const [createBook] = useCreateBookMutation()
 
-    const dispatch = useAppDispatch() 
     const form = useForm()
 
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        const res = await dispatch(addBook(data as IBook))
-        form.reset({
-            Title: "",
-            Author: "",
-            Genre: "",
-            ISBN: "",
-            Copies: 0,
-            Availability: "",
-        });
-        toast.success('Add Book Successfully')
 
-        console.log('res', res);
-    } 
+
+        const sentData = {
+            ...data,
+            copies: Number(data.copies)
+        }
+
+        const res = await createBook(sentData)
+        if (res.data.success) {
+            form.reset({
+                title: "",
+                author: "",
+                genre: "",
+                isbn: "",
+                copies: 0,
+                available: "",
+                description: "",
+            });
+            toast.success('Add Book Successfully')
+        } 
+    }
 
     return (
         <div className="p-3 md:w-1/2 lg:w-1/3 mx-auto shadow-md m-2 rounded-md">
@@ -55,7 +62,7 @@ const AddBooks = () => {
                     <FormField
 
                         control={form.control}
-                        name="Title"
+                        name="title"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Title</FormLabel>
@@ -68,7 +75,7 @@ const AddBooks = () => {
                     {/* input field Author */}
                     <FormField
                         control={form.control}
-                        name="Author"
+                        name="author"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Author</FormLabel>
@@ -81,20 +88,32 @@ const AddBooks = () => {
                     {/* input field Genre */}
                     <FormField
                         control={form.control}
-                        name="Genre"
+                        name="genre"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem >
                                 <FormLabel>Genre</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Enter Genre" {...field} required />
-                                </FormControl>
+                                <Select onValueChange={field.onChange} defaultValue={field.value} required>
+                                    <FormControl className="w-full">
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a Genre" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectItem value="FICTION">FICTION</SelectItem>
+                                        <SelectItem value="NON_FICTION">NON_FICTION</SelectItem>
+                                        <SelectItem value="SCIENCE">SCIENCE</SelectItem>
+                                        <SelectItem value="HISTORY">HISTORY</SelectItem>
+                                        <SelectItem value="BIOGRAPHY">BIOGRAPHY</SelectItem>
+                                        <SelectItem value="FANTASY">FANTASY</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </FormItem>
                         )}
                     />
                     {/* input field ISBN */}
                     <FormField
                         control={form.control}
-                        name="ISBN"
+                        name="isbn"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>ISBN</FormLabel>
@@ -107,7 +126,7 @@ const AddBooks = () => {
                     {/* input field Copies */}
                     <FormField
                         control={form.control}
-                        name="Copies"
+                        name="copies"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Copies</FormLabel>
@@ -120,7 +139,7 @@ const AddBooks = () => {
                     {/* input field Availability */}
                     <FormField
                         control={form.control}
-                        name="Availability"
+                        name="available"
                         render={({ field }) => (
                             <FormItem >
                                 <FormLabel>Availability</FormLabel>
@@ -138,7 +157,21 @@ const AddBooks = () => {
 
                             </FormItem>
                         )}
-                    /> 
+                    />
+                    {/* input field Description */}
+                    <FormField
+                        control={form.control}
+                        name="Description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                    {/* <Input placeholder="Description"  /> */}
+                                    <Textarea placeholder="Type your message here." {...field} required />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
                     {/* submit button */}
                     <button type="submit" className="px-2 py-1 rounded-md text-center text-white bg-orange-500 w-full hover:shadow-orange-300 shadow-md">Submit</button>
                 </form>

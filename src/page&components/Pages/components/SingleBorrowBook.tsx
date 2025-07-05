@@ -9,7 +9,7 @@ interface IProps {
 
 const SingleBorrowBook = ({ borrow }: IProps) => {
 
-    const { id, bookId, buyerName, quantity, bookTitle, bookAuthor, genre, } = borrow
+    const { buyerName, quantity, bookTitle, bookAuthor, genre,description } = borrow
 
     return (
         <Card className="mb-5 flex flex-col h-full">
@@ -20,6 +20,7 @@ const SingleBorrowBook = ({ borrow }: IProps) => {
                     <p><strong>Author:</strong> {bookAuthor}</p>
                     <p><strong>Genre:</strong> {genre}</p>
                     <p><strong>Quantity:</strong> {quantity}</p>
+                    <p className="mt-2">{description}</p>
                 </div>
             </CardContent>
         </Card>

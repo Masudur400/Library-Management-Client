@@ -20,39 +20,50 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
-import { useAppDispatch } from "@/redux/hook";
-import { updateBook } from "@/redux/features/bookSlice";
-import type { IBook } from "@/redux/interfaces/interface";
 import { useState } from "react";
-
-
-
-
+import { Textarea } from "@/components/ui/textarea";
+import { useUpdateBookMutation } from "@/redux/api/bookApi";
+import type { IBook } from "@/redux/interfaces/interface";
+import toast, { Toaster } from 'react-hot-toast';
 
 const EditBookModal = ({ book }: { book: IBook }) => {
-    const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
 
     const form = useForm<FieldValues>({
         defaultValues: {
-            id: book.id,
-            Title: book.Title,
-            Author: book.Author,
-            Genre: book.Genre,
-            ISBN: book.ISBN,
-            Copies: book.Copies,
-            Availability: book.Availability,
+            id: book._id,
+            title: book.title,
+            author: book.author,
+            genre: book.genre,
+            isbn: book.isbn,
+            copies: book.copies,
+            available: book.available,
+            description: book.description,
         },
     });
 
+    const [updateBook] = useUpdateBookMutation();
+
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        const res = await dispatch(updateBook(data as IBook));
-        setOpen(false);
-        console.log(res);
+        try {
+            const { id, ...updatedData } = data;
+
+
+            const res = await updateBook({ id, updatedData }).unwrap();
+            if (res.success) {
+                toast.success('Data updated successfully')
+                setOpen(false);
+            }
+
+
+        } catch (err) {
+            console.error("Update failed:", err);
+        }
     };
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
+            <Toaster></Toaster>
             <DialogTrigger asChild>
                 <button className="bg-blue-500 w-fit h-fit px-3 py-1 rounded-md hover:shadow-md hover:shadow-blue-500 text-white text-xl">
                     <FiEdit />
@@ -61,12 +72,11 @@ const EditBookModal = ({ book }: { book: IBook }) => {
             <DialogContent className="sm:max-w-[425px]">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-
                         <div className="grid grid-cols-2 gap-2">
                             {/* Title */}
                             <FormField
                                 control={form.control}
-                                name="Title"
+                                name="title"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Title</FormLabel>
@@ -79,7 +89,7 @@ const EditBookModal = ({ book }: { book: IBook }) => {
                             {/* Author */}
                             <FormField
                                 control={form.control}
-                                name="Author"
+                                name="author"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Author</FormLabel>
@@ -92,20 +102,32 @@ const EditBookModal = ({ book }: { book: IBook }) => {
                             {/* Genre */}
                             <FormField
                                 control={form.control}
-                                name="Genre"
+                                name="genre"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Genre</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Enter Genre" {...field} required />
-                                        </FormControl>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value} required>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a Genre" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="FICTION">FICTION</SelectItem>
+                                                <SelectItem value="NON_FICTION">NON_FICTION</SelectItem>
+                                                <SelectItem value="SCIENCE">SCIENCE</SelectItem>
+                                                <SelectItem value="HISTORY">HISTORY</SelectItem>
+                                                <SelectItem value="BIOGRAPHY">BIOGRAPHY</SelectItem>
+                                                <SelectItem value="FANTASY">FANTASY</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                     </FormItem>
                                 )}
                             />
                             {/* ISBN */}
                             <FormField
                                 control={form.control}
-                                name="ISBN"
+                                name="isbn"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>ISBN</FormLabel>
@@ -118,7 +140,7 @@ const EditBookModal = ({ book }: { book: IBook }) => {
                             {/* Copies */}
                             <FormField
                                 control={form.control}
-                                name="Copies"
+                                name="copies"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Copies</FormLabel>
@@ -131,12 +153,12 @@ const EditBookModal = ({ book }: { book: IBook }) => {
                             {/* Availability */}
                             <FormField
                                 control={form.control}
-                                name="Availability"
+                                name="available"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Availability</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value} required>
-                                            <FormControl className="w-full">
+                                            <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select Availability" />
                                                 </SelectTrigger>
@@ -151,7 +173,19 @@ const EditBookModal = ({ book }: { book: IBook }) => {
                             />
                         </div>
 
-
+                        {/* Description */}
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Description</FormLabel>
+                                    <FormControl>
+                                        <Textarea placeholder="Enter book description" {...field} required />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
 
                         {/* Submit Button */}
                         <button
