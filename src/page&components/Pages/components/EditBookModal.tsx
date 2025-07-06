@@ -165,7 +165,7 @@ const EditBookModal = ({ book }: { book: IBook }) => {
                                             </FormControl>
                                             <SelectContent>
                                                 <SelectItem value="Available">Available</SelectItem>
-                                                <SelectItem value="Limited">Limited</SelectItem>
+                                                {/* <SelectItem value="Limited">Limited</SelectItem> */}
                                             </SelectContent>
                                         </Select>
                                     </FormItem>

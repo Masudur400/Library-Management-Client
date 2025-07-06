@@ -150,7 +150,7 @@ const AddBooks = () => {
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="Limited">Limited</SelectItem>
+                                        {/* <SelectItem value="Limited">Limited</SelectItem> */}
                                         <SelectItem value="Available">Available</SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -161,7 +161,7 @@ const AddBooks = () => {
                     {/* input field Description */}
                     <FormField
                         control={form.control}
-                        name="Description"
+                        name="description"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Description</FormLabel>

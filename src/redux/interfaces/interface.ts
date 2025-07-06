@@ -10,7 +10,7 @@ export interface IBook {
 }
 
 export interface IBorrow {
-  _id?: string;  // <-- এখানে question mark যোগ করো
+  _id?: string;
   bookId: string;
   buyerName: string;
   quantity: number;

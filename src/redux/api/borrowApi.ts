@@ -3,11 +3,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const borrowApi = createApi({
   reducerPath: 'borrowApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api',
+    baseUrl: 'https://library-management-system-server-theta.vercel.app/api',
   }),
-  tagTypes: ['Books', 'Borrows'],  
-  endpoints: (builder) => ({ 
-
+  tagTypes: ['Borrows'],  
+  endpoints: (builder) => ({  
     //Get all borrows
     getBorrows: builder.query({
       query: () => '/borrow',

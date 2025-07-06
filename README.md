@@ -67,3 +67,52 @@ export default tseslint.config([
   },
 ])
 ```
+
+
+
+
+# 📚 Library Management System
+
+The **Library Management System** is a full-stack web application that allows users to browse available books, borrow them, and manage library collections with real-time updates. It includes a modern and responsive frontend built with **React, TypeScript, Redux Toolkit, RTK Query**, and a robust backend using **Node.js, Express, MongoDB, and Mongoose**.
+
+---
+
+## 🚀 Project Overview
+
+This system is ideal for libraries or educational institutions to manage their book collection and monitor borrowing activity. It supports:
+
+- 📖 Book listing, creation, update, and deletion
+- 👤 Borrowing books with validation (quantity + stock check)
+- 📊 Borrow summary page
+- 🔔 Toast notification system for success/error
+- 📦 Real-time updates with API integration
+
+---
+
+## 🌐 Live Demo
+
+🟢 [Live Site ](https://library-management-client-vert.vercel.app/)
+
+---
+
+## 🧑‍💻 Technologies Used
+
+### Frontend (Client)
+- React + TypeScript
+- Redux Toolkit
+- RTK Query
+- Tailwind CSS
+- React Hook Form
+- ShadCN UI (Dialog, Input, Form components)
+
+### Backend (Server)
+- Node.js
+- Express.js
+- MongoDB + Mongoose
+- TypeScript
+- Custom Error Handling
+- Aggregation & Validation Logic
+
+--- 
+
+

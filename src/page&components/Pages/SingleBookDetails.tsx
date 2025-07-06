@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import BorrowBookModal from "./components/BorrowBookModal"; 
+import BorrowBookModal from "./components/BorrowBookModal";
 import { useGetBookByIdQuery } from "@/redux/api/bookApi";
 
 const SingleBookDetails = () => {
@@ -22,10 +22,13 @@ const SingleBookDetails = () => {
         <p><strong>ISBN:</strong> {book.isbn}</p>
         <p><strong>Copies:</strong> {book.copies}</p>
         <p>
-          <strong>Availability:</strong>{" "}
-          <span className={book.available === "Available" ? "text-green-500" : "text-red-500"}>
-            {book.available}
-          </span>
+          {
+            book.copies === 0 ?
+              <p >Available : <span className="text-red-500">Unavailable</span></p> :
+              book.copies <= 5 ?
+                <p >Available : <span className="text-orange-500">Limited</span></p> :
+                <p >Available : <span className="text-green-500">Available</span></p>
+          }
         </p>
         <p>{book.description}</p>
       </div>
@@ -33,7 +36,9 @@ const SingleBookDetails = () => {
         <button onClick={() => navigate(-1)} className="h-5 w-5 rounded-full bg-red-500 text-white text-xl">
           <IoMdArrowRoundBack />
         </button>
-        <BorrowBookModal book={book}></BorrowBookModal>
+        {
+          book.copies > 0 ? <BorrowBookModal book={book}></BorrowBookModal> :''
+        }
       </div>
     </div>
   );

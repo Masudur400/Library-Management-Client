@@ -1,5 +1,4 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { cn } from "@/lib/utils"; 
+import { Card, CardContent, CardFooter } from "@/components/ui/card" 
 import type { IBook } from "@/redux/interfaces/interface";
 import { MdOutlineDeleteForever } from "react-icons/md"; 
 import { SlEye } from "react-icons/sl";
@@ -14,9 +13,9 @@ interface IProps {
     book: IBook;
 }
 
-const SingleBookCard = ({ book }: IProps) => {
+const SingleBookCard = ({ book}: IProps) => {
 
-    const { _id, title, author, available,copies } = book 
+    const { _id, title, author, copies } = book 
 
     const [deleteBook] = useDeleteBookMutation();
 
@@ -24,7 +23,7 @@ const SingleBookCard = ({ book }: IProps) => {
         try {
            const res= await deleteBook(id).unwrap();
            if(res.success){
-            toast.success('Deleted successfully')
+            toast.success('Deleted successfully') 
            } 
         } catch (err) {
             console.error("Delete failed:", err);
@@ -41,10 +40,17 @@ const SingleBookCard = ({ book }: IProps) => {
                     <p className="font-medium ">Title : {title}</p>
                     <p>Author : {author}</p>
                     <p>Copies : <span className="text-red-500">{copies}</span></p>
-                    <p>Availability : <span className={cn({
+                    {/* <p>Availability : <span className={cn({
                         'text-green-500': available === 'Available',
                         'text-red-500': available === 'Limited',
-                    })}>{available}</span></p>
+                    })}>{available}</span></p> */}
+                     {
+                        copies === 0 ?
+                         <p >Available : <span className="text-red-500">Unavailable</span></p> :
+                         copies <= 5 ? 
+                         <p >Available : <span className="text-orange-500">Limited</span></p> : 
+                         <p >Available : <span className="text-green-500">Available</span></p>
+                     }
                 </CardContent>
                 <CardFooter className="flex justify-between items-center flex-grow ">
                     <Link to={`/book/${_id}`} className="bg-green-500 w-fit h-fit px-3 py-1 rounded-md hover:shadow-md hover:shadow-green-500   text-white text-xl"><SlEye /></Link>
