@@ -4,18 +4,13 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { LiaTimesSolid } from 'react-icons/lia'; 
 import { Link, NavLink } from "react-router";
 
-const Navbar = () => {
-
-    // const [profile, setProfile] = useState(false);
-    // const { user, logOut, loading } = useAuth();
-    // const axiosSecure = useAxiosSecure();
+const Navbar = () => { 
     const [click, setClick] = useState(false); 
 
 
     const handleClick = () => setClick(!click);
     const closeMenu = () => {
-        setClick(false);
-        // setProfile(false);
+        setClick(false); 
     };
 
 
